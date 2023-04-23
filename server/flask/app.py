@@ -38,12 +38,6 @@ def forward(path,request):
     resp.headers['Content-Type'] = req.headers['Content-Type']
     return resp
 
-@app.route('/config', methods=['POST'])
-@app.route('/api/config', methods=['POST'])
-def config():
-    return forward('/config', request)
-
-
 @app.route("/chat-process", methods=["POST"])
 @app.route("/api/chat-process", methods=["POST"])
 def chat_process():
@@ -131,37 +125,6 @@ def chat_process():
     response = Response(stream_with_context(generate()), 
                     content_type = req.headers['content-type'])
     return response
-
-@app.route('/session', methods=['POST'])
-@app.route('/api/session', methods=['POST'])
-def session():
-    return forward('/session', request)
-
-@app.route('/verify', methods=['POST'])
-def verify():
-    return forward('/verify', request)
-
-@app.route('/waybill_list', methods=['POST'])
-def waybill_list():
-    data = request.get_json()
-    rider_id = data.get('rider_id', None) if data is not None else None
-
-    waybill_list_data = None
-    if rider_id is not None:
-        rider_id = int(rider_id)
-        if rider_id in rider_waybills_all:
-            waybill_list_data = rider_waybills_all[rider_id]
-    
-    if waybill_list_data is None:
-        rider_id = random.sample(list(rider_waybills_all.keys()),1)[0]
-        waybill_list_data = rider_waybills_all[rider_id]
-
-    resp_data = {
-        'status': 'Success',
-        'message': '',
-        'data': waybill_list_data
-    }
-    return jsonify(resp_data) 
 
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", port="3003")
