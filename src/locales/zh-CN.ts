@@ -28,7 +28,7 @@ export default {
     unauthorizedTips: '未经授权，请先进行验证。',
   },
   chat: {
-    placeholder: '来说点什么吧...（Shift + Enter = 换行）',
+    placeholder: '想说什么？（Enter 发送，Shift + Enter 换行）',
     placeholderMobile: '来说点什么...',
     copy: '复制',
     copied: '复制成功',
