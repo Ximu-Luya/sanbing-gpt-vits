@@ -7,6 +7,11 @@ import { ChatLayout } from '@/views/chat/layout'
 const routes: RouteRecordRaw[] = [
 
   {
+    path: '/',
+    name: 'home',
+    redirect: '/chat',
+  },
+  {
     path: '/chat',
     name: 'Root',
     component: ChatLayout,
@@ -29,12 +34,6 @@ const routes: RouteRecordRaw[] = [
     path: '/500',
     name: '500',
     component: () => import('@/views/exception/500/index.vue'),
-  },
-
-  {
-    path: '/',
-    name: 'home',
-    redirect: '/chat',
   },
 
   {
