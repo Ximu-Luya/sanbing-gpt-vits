@@ -7,7 +7,6 @@ import Footer from './Footer.vue'
 import { useAppStore, useChatStore } from '@/store'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
 import { PromptStore } from '@/components/common'
-import { RiderStatusBar } from '@/components/custom'
 
 const appStore = useAppStore()
 const chatStore = useChatStore()
@@ -79,7 +78,6 @@ watch(
           <List />
         </div>
         
-        <RiderStatusBar />
       </main>
       <Footer />
     </div>
