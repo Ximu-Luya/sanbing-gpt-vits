@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { getToken, removeToken, setToken } from './helper'
 import { store } from '@/store'
-import { fetchSession } from '@/api'
+// import { fetchSession } from '@/api'
 
 export interface AuthState {
   token: string | undefined
@@ -17,9 +17,9 @@ export const useAuthStore = defineStore('auth-store', {
   actions: {
     async getSession() {
       try {
-        const { data } = await fetchSession<{ auth: boolean }>()
-        this.session = { ...data }
-        return Promise.resolve(data)
+        // const { data } = await fetchSession<{ auth: boolean }>()
+        // this.session = { ...data }
+        // return Promise.resolve(data)
       }
       catch (error) {
         return Promise.reject(error)

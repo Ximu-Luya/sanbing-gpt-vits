@@ -21,7 +21,7 @@ export interface UserState {
 export function defaultSetting(): UserState {
   return {
     userInfo: {
-      avatar: '/assets/ying.jpg',
+      avatar: '/src/assets/ying.jpg',
       name: '荧',
       description: '旅行者'
     },
