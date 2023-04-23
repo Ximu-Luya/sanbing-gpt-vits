@@ -36,7 +36,7 @@ onMounted(() => {
   <NSpin :show="loading">
     <div class="p-4 space-y-4">
       <h2 class="text-xl font-bold">
-        Version - 多轮对话
+        Version - 散兵实时交谈
       </h2>
       <div class="p-2 space-y-2 rounded-md bg-neutral-100 dark:bg-neutral-700">
         <p>
@@ -51,7 +51,7 @@ onMounted(() => {
           进行二次开发
         </p>
         <p>
-          本demo制作团队：美团/到家事业群/到家研发平台/履约平台技术部/决策智能中心/数字智能组
+          制作团队：西木工作室/西木
         </p>
       </div>
       <!-- <p>{{ $t("setting.api") }}：{{ config?.apiModel ?? '-' }}</p>
