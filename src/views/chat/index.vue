@@ -54,9 +54,9 @@ const shouldDisplayDataSources= computed(
     return wrapperChatList
   }
 )
-function handleButtonHide(event: MouseEvent){
-  isHidden.value = !isHidden.value
-  scrollToBottom()
+const chatDataViewerCollapsed = computed(() => appStore.chatDataViewerCollapsed)
+function handleButtonHide(){
+  appStore.setChatDataViewerCollapsed(false)
 }
 
 // 添加PromptStore
@@ -521,9 +521,9 @@ const buttonDisabled = computed(() => {
   return loading.value || !prompt.value || prompt.value.trim() === ''
 })
 
-const voiceButtonDisabled = computed(() => {
-  return loading.value
-})
+// const voiceButtonDisabled = computed(() => {
+//   return loading.value
+// })
 
 const footerClass = computed(() => {
   let classes = ['p-4']
@@ -570,7 +570,7 @@ onUnmounted(() => {
           <template v-if="!dataSources.length">
             <div class="flex items-center justify-center mt-4 text-center text-neutral-300">
               <SvgIcon icon="ri:bubble-chart-fill" class="mr-2 text-3xl" />
-              <span>Aha~</span>
+              <span>哼，你别不知道怎么说话吧</span>
             </div>
           </template>
           <template v-else>
@@ -697,13 +697,13 @@ onUnmounted(() => {
               />
             </template>
           </NAutoComplete>
-          <NButton type="primary" :disabled="voiceButtonDisabled">
+          <!-- <NButton type="primary" :disabled="voiceButtonDisabled">
             <template #icon>
               <span class="dark:text-black">
                 <SvgIcon icon="material-symbols:auto-detect-voice" />
               </span>
             </template>
-          </NButton>
+          </NButton> -->
           <NButton type="primary" :disabled="buttonDisabled" @click="handleSubmit">
             <template #icon>
               <span class="dark:text-black">
@@ -711,10 +711,8 @@ onUnmounted(() => {
               </span>
             </template>
           </NButton>
-          <NButton type="primary" :disabled="loading" @click="handleButtonHide">
-                <span id="btn_switch_hide" class="dark:text-black">
-                  {{isHidden ? "显示" : "隐藏"}}
-                </span>
+          <NButton type="primary" v-if="chatDataViewerCollapsed" @click="handleButtonHide">
+            <span id="btn_switch_hide" class="dark:text-black">立绘</span>
           </NButton>
         </div>
       </div>
