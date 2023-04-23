@@ -66,12 +66,14 @@ function handleUpdateCollapsed() {
           show-trigger="arrow-circle"
           content-style="padding: 24px;"
           bordered
+          class="right-sider-container"
           @update-collapsed="handleUpdateCollapsed"
         >
-        <NImage
-          width="800"
-          :src="sanbing_lihui"
-        />
+          <NImage
+            width="800"
+            class="lihui-img"
+            :src="sanbing_lihui"
+          />
         </NLayoutSider>
       </NLayout>
     </div>
@@ -86,5 +88,16 @@ function handleUpdateCollapsed() {
 
 .n-layout-scroll-container {
   overflow: visible !important;
+}
+
+.right-sider-container{
+  position: relative;
+  overflow: hidden;
+}
+
+.lihui-img {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(4.5);
 }
 </style>
