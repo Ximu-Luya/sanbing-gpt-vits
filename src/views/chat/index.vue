@@ -18,7 +18,7 @@ import { t } from '@/locales'
 
 let controller = new AbortController()
 
-const openLongReply = import.meta.env.VITE_GLOB_OPEN_LONG_REPLY === 'true'
+// const openLongReply = import.meta.env.VITE_GLOB_OPEN_LONG_REPLY === 'true'
 
 const route = useRoute()
 const dialog = useDialog()
@@ -131,7 +131,6 @@ async function onUpdateReply(message: string) {
 
   console.log(options)
   try {
-    let lastText = ''
     const fetchChatAPIOnce = async () => {
       await fetchChatAPIProcess<Chat.ConversationResponse>({
         prompt: message,
@@ -140,54 +139,40 @@ async function onUpdateReply(message: string) {
         onDownloadProgress: ({ event }) => {
           const xhr = event.target
           const { responseText } = xhr
-          // Always process the final line
-          const lastIndex = responseText.lastIndexOf('\n')
-          let chunk = responseText
-          if (lastIndex !== -1)
-            chunk = responseText.substring(lastIndex)
+          console.log(responseText)
           try {
-            const data = JSON.parse(chunk)
             updateChat(
               +uuid,
               dataSources.value.length - 1,
               {
                 dateTime: new Date().toLocaleString(),
-                text: lastText + data.text ?? '',
+                text: responseText ?? '',
                 inversion: false,
                 error: false,
                 loading: false,
-                conversationOptions: { 
-                  conversationId: data.conversationId, 
-                  parentMessageId: data.id, 
-                  conversationStage: data.conversationStage,
-                  showCandidateWaybill: data.showCandidateWaybill,
-                  provideStatus: data.provideStatus,
-                  waybill: data.waybill,
-                },
+                conversationOptions: null,
                 requestOptions: { prompt: message, options: { ...options } },
               },
             )
 
             // TODO： 这里的updateChatSome未生效，可以讨论一下
             // console.log('用户',conversationList.value[conversationList.value.length - 2]?.conversationOptions?.wrappedPrompt)
-            updateChatSome(
-              +uuid,
-              dataSources.value.length - 2,
-              {
-                conversationOptions: { 
-                  wrappedPrompt: data.wrappedPrompt
-                },
-              },
-            )
-            // console.log('用户',conversationList.value[conversationList.value.length - 2]?.conversationOptions?.wrappedPrompt)
-            // console.log(data.wrappedPrompt)
+            // updateChatSome(
+            //   +uuid,
+            //   dataSources.value.length - 2,
+            //   {
+            //     conversationOptions: { 
+            //       wrappedPrompt: data.wrappedPrompt
+            //     },
+            //   },
+            // )
 
-            if (openLongReply && data.detail.choices[0].finish_reason === 'length') {
-              options.parentMessageId = data.id
-              lastText = data.text
-              message = ''
-              return fetchChatAPIOnce()
-            }
+            // if (openLongReply && data.detail.choices[0].finish_reason === 'length') {
+            //   options.parentMessageId = data.id
+            //   lastText = data.text
+            //   message = ''
+            //   return fetchChatAPIOnce()
+            // }
 
             scrollToBottom()
           }
@@ -290,7 +275,6 @@ async function onRegenerate(index: number) {
   )
 
   try {
-    let lastText = ''
     const fetchChatAPIOnce = async () => {
       await fetchChatAPIProcess<Chat.ConversationResponse>({
         prompt: message,
@@ -300,49 +284,38 @@ async function onRegenerate(index: number) {
           const xhr = event.target
           const { responseText } = xhr
           // Always process the final line
-          const lastIndex = responseText.lastIndexOf('\n')
-          let chunk = responseText
-          if (lastIndex !== -1)
-            chunk = responseText.substring(lastIndex)
+          console.log(responseText)
           try {
-            const data = JSON.parse(chunk)
             updateChat(
               +uuid,
               index,
               {
                 dateTime: new Date().toLocaleString(),
-                text: lastText + data.text ?? '',
+                text: responseText ?? '',
                 inversion: false,
                 error: false,
                 loading: false,
-                conversationOptions: { 
-                  conversationId: data.conversationId, 
-                  parentMessageId: data.id, 
-                  conversationStage: data.conversationStage,
-                  showCandidateWaybill: data.showCandidateWaybill,
-                  provideStatus: data.provideStatus,
-                  waybill: data.waybill,
-                },
+                conversationOptions: null,
                 requestOptions: { prompt: message, options: { ...options } },
               },
             )
 
-            updateChatSome(
-              +uuid,
-              index-1,
-              {
-                conversationOptions: { 
-                  wrappedPrompt: data.wrappedPrompt
-                },
-              },
-            )
+            // updateChatSome(
+            //   +uuid,
+            //   index-1,
+            //   {
+            //     conversationOptions: { 
+            //       wrappedPrompt: data.wrappedPrompt
+            //     },
+            //   },
+            // )
 
-            if (openLongReply && data.detail.choices[0].finish_reason === 'length') {
-              options.parentMessageId = data.id
-              lastText = data.text
-              message = ''
-              return fetchChatAPIOnce()
-            }
+            // if (openLongReply && data.detail.choices[0].finish_reason === 'length') {
+            //   options.parentMessageId = data.id
+            //   lastText = data.text
+            //   message = ''
+            //   return fetchChatAPIOnce()
+            // }
           }
           catch (error) {
             //
