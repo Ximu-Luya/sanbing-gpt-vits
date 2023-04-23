@@ -21,10 +21,9 @@ export interface UserState {
 export function defaultSetting(): UserState {
   return {
     userInfo: {
-      avatar: '/assets/rider_icon.png',
-      name: '数字智能组',
-      description: '决策智能中心',
-      riderInfo: {}
+      avatar: '/assets/ying.jpg',
+      name: '荧',
+      description: '旅行者'
     },
   }
 }
