@@ -1,10 +1,11 @@
 <script setup lang='ts'>
 import { computed } from 'vue'
-import { NLayout, NLayoutContent, NLayoutSider, NSpin } from 'naive-ui'
+import { NLayout, NLayoutContent, NLayoutSider, NImage } from 'naive-ui'
+import sanbing_lihui from '@/assets/sanbing_lihui.png'
 // @ts-ignore
 import { JsonViewer } from "vue3-json-viewer"
 import "vue3-json-viewer/dist/index.css"
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import Sider from './sider/index.vue'
 // import Permission from './Permission.vue'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
@@ -41,26 +42,6 @@ const chatDataViewerCollapsed = computed(() => appStore.chatDataViewerCollapsed)
 function handleUpdateCollapsed() {
   appStore.setChatDataViewerCollapsed(!chatDataViewerCollapsed.value)
 }
-
-const route = useRoute()
-
-const uuid = computed(() => {
-  return route.params.uuid
-})
-
-const chatDataLoading = computed(() => appStore.chatDataLoading)
-
-const currentConversationData = computed(
-  () => {
-    if(chatDataLoading.value) return []
-
-    const chatList = chatStore.getChatByUuid(+uuid)
-    const wrapperChatList = chatList.map(chat => ({
-      ...chat
-    }))
-    return wrapperChatList
-  }
-)
 </script>
 
 <template>
@@ -80,16 +61,17 @@ const currentConversationData = computed(
           :collapsed="chatDataViewerCollapsed"
           collapse-mode="transform"
           :collapsed-width="0"
-          :width="320"
+          :width="500"
           :native-scrollbar="true"
           show-trigger="arrow-circle"
           content-style="padding: 24px;"
           bordered
           @update-collapsed="handleUpdateCollapsed"
         >
-          <NSpin :show="chatDataLoading">
-            <JsonViewer :value="currentConversationData" copyable :expand-depth="3" expanded/>
-          </NSpin>
+        <NImage
+          width="800"
+          :src="sanbing_lihui"
+        />
         </NLayoutSider>
       </NLayout>
     </div>
