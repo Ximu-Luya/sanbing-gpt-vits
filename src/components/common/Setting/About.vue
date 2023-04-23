@@ -53,6 +53,16 @@ onMounted(() => {
         <p>
           制作团队：西木工作室/西木
         </p>
+        <p>
+          仓库地址：
+          <a
+            class="text-blue-600 dark:text-blue-500" 
+            target="_blank"
+            href="https://github.com/Ximu-Luya/sanbing-gpt-vits"
+          >
+            Ximu-Luya/sanbing-gpt-vits
+          </a>
+        </p>
       </div>
       <!-- <p>{{ $t("setting.api") }}：{{ config?.apiModel ?? '-' }}</p>
       <p>{{ $t("setting.reverseProxy") }}：{{ config?.reverseProxy ?? '-' }}</p>
