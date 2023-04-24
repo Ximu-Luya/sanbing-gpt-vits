@@ -21,6 +21,12 @@ export const useAppStore = defineStore('app-store', {
       this.recordState()
     },
 
+    // 设置AI音频服务可用性
+    setVoiceEngineAvailable(available: boolean) {
+      this.voiceEngineAvailable = available
+      this.recordState()
+    },
+
     setTheme(theme: Theme) {
       this.theme = theme
       this.recordState()

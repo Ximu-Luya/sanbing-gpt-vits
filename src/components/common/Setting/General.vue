@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
-import { NButton, NInput, NPopconfirm, NSelect, useMessage } from 'naive-ui'
+import { NButton, NInput, NPopconfirm, NSelect, useMessage, NSwitch } from 'naive-ui'
 import type { Language, Theme } from '@/store/modules/app/helper'
 import { SvgIcon } from '@/components/common'
 import { useAppStore, useUserStore } from '@/store'
@@ -20,7 +20,7 @@ const theme = computed(() => appStore.theme)
 
 const userInfo = computed(() => userStore.userInfo)
 
-const avatar = ref(userInfo.value.avatar ?? '')
+// const avatar = ref(userInfo.value.avatar ?? '')
 
 const name = ref(userInfo.value.name ?? '')
 
@@ -34,6 +34,9 @@ const language = computed({
     appStore.setLanguage(value)
   },
 })
+
+// 获取Store中的AI音频服务可用性
+const voiceEngineAvailable = computed(() => appStore.voiceEngineAvailable)
 
 const themeOptions: { label: string; key: Theme; icon: string }[] = [
   {
@@ -118,12 +121,19 @@ function handleImportButtonClick(): void {
   if (fileInput)
     fileInput.click()
 }
+
+function handleChangeVoiceEngineAvailable(value: boolean): void {
+  console.log(value)
+  appStore.setVoiceEngineAvailable(value)
+
+  ms.success("本地AI音频引擎服务：" + (value ? '已启用': '已关闭'))
+}
 </script>
 
 <template>
   <div class="p-4 space-y-5 min-h-[200px]">
     <div class="space-y-6">
-      <div class="flex items-center space-x-4">
+      <!-- <div class="flex items-center space-x-4">
         <span class="flex-shrink-0 w-[100px]">{{ $t('setting.avatarLink') }}</span>
         <div class="flex-1">
           <NInput v-model:value="avatar" placeholder="" />
@@ -131,7 +141,7 @@ function handleImportButtonClick(): void {
         <NButton size="tiny" text type="primary" @click="updateUserInfo({ avatar })">
           {{ $t('common.save') }}
         </NButton>
-      </div>
+      </div> -->
       <div class="flex items-center space-x-4">
         <span class="flex-shrink-0 w-[100px]">{{ $t('setting.name') }}</span>
         <div class="w-[200px]">
@@ -218,6 +228,17 @@ function handleImportButtonClick(): void {
         <NButton size="small" @click="handleReset">
           {{ $t('common.reset') }}
         </NButton>
+      </div>
+      <div class="flex items-center space-x-4">
+        <span class="flex-shrink-0 w-[100px]">本地AI音频引擎服务</span>
+        <NSwitch :value="voiceEngineAvailable" @update:value="handleChangeVoiceEngineAvailable">
+          <template #checked>
+            已启用
+          </template>
+          <template #unchecked>
+            已关闭
+          </template>
+        </NSwitch>
       </div>
     </div>
   </div>

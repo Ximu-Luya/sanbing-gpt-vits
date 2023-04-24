@@ -12,10 +12,18 @@ export interface AppState {
   chatDataLoading: boolean
   theme: Theme
   language: Language
+  voiceEngineAvailable: boolean // 本地AI音频引擎服务是否可用
 }
 
 export function defaultSetting(): AppState {
-  return { siderCollapsed: false, chatDataViewerCollapsed: false, chatDataLoading: false, theme: 'light', language: 'zh-CN' }
+  return { 
+    siderCollapsed: false,
+    chatDataViewerCollapsed: false,
+    chatDataLoading: false,
+    theme: 'light',
+    language: 'zh-CN',
+    voiceEngineAvailable: true // 默认可用
+  }
 }
 
 export function getLocalSetting(): AppState {

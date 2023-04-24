@@ -39,6 +39,8 @@ const { uuid } = route.params as { uuid: string }
 
 const dataSources = computed(() => chatStore.getChatByUuid(+uuid))
 const conversationList = computed(() => dataSources.value.filter(item => (!item.inversion && !item.error)))
+// 获取Store中的AI音频服务可用性
+const voiceEngineAvailable = computed(() => appStore.voiceEngineAvailable)
 
 const prompt = ref<string>('')
 const loading = ref<boolean>(false)
@@ -105,7 +107,6 @@ async function fetchChatAPIOnce(message: string) {
   let fetchIndex = 0 // 当前音频获取序号
   let voices: string[] = [] // 音频文件路径数组
   let voicePlayIndex = 0 // 音频播放序号
-  let voicePlayAvailable = true // 音频播放是否可用
 
   await fetchChatAPIProcess<Chat.ConversationResponse>({
     prompt: message,
@@ -125,7 +126,7 @@ async function fetchChatAPIOnce(message: string) {
         currentStopIndex += sentence.length
 
         // 根据句子获取音频文件
-        if (voicePlayAvailable) {
+        if (voiceEngineAvailable.value) {
           const index = fetchIndex
           fetchVoice(sentence).then(res => {
             // 将获取到的音频文件路径存储到voices数组中
@@ -136,7 +137,7 @@ async function fetchChatAPIOnce(message: string) {
             }
           })
           .catch(err => {
-            voicePlayAvailable = false
+            appStore.setVoiceEngineAvailable(false)
             console.error("音频获取失败：本条消息不再获取音频，请检查本地是否开启AI音频服务")
             notification.error({
               content: '音频获取失败',
