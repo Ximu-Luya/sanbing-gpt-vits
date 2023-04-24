@@ -1,20 +1,28 @@
 import json
 import random
 import requests
-from flask import Flask, Response, stream_with_context, request, render_template, jsonify
+from flask import Flask, Response, stream_with_context, request, render_template, jsonify, send_from_directory
+import os
 
-# from control import *
-
-BASE_REMOTE_URL = "https://api.deliveryai.social:3002/"
 app = Flask(__name__, 
             static_url_path='/', 
             static_folder='static',
             template_folder="./static",
             )
 
+# 获取当前 Python 文件的路径
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+
+# 设置静态文件目录和默认页面
+app.static_folder = os.path.join(BASE_DIR, 'dist')
+# 将指定路径映射到静态资源目录下的文件
 @app.route('/')
-def index():
-    return render_template("index.html")
+def serve_index():
+    return send_from_directory(app.static_folder, 'index.html')
+
+@app.route('/<path:path>')
+def serve_static(path):
+    return send_from_directory(app.static_folder, path)
     
 @app.route("/chat-process", methods=["POST"])
 @app.route("/api/chat-process", methods=["POST"])
