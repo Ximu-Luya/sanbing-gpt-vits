@@ -2,7 +2,7 @@
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
-import { NAutoComplete, NButton, NInput, useDialog, useMessage } from 'naive-ui'
+import { NAutoComplete, NButton, NInput, useDialog, useMessage, useNotification } from 'naive-ui'
 import html2canvas from 'html2canvas'
 import { Message } from './components'
 import { useScroll } from './hooks/useScroll'
@@ -13,10 +13,11 @@ import HeaderComponent from './components/Header/index.vue'
 import { HoverButton, SvgIcon } from '@/components/common'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
 import { useAppStore, useChatStore, usePromptStore } from '@/store'
-import { fetchChatAPIProcess } from '@/api'
+import { fetchChatAPIProcess, fetchVoice } from '@/api'
 import { t } from '@/locales'
 
 let controller = new AbortController()
+const notification = useNotification()
 
 // const openLongReply = import.meta.env.VITE_GLOB_OPEN_LONG_REPLY === 'true'
 
@@ -99,7 +100,12 @@ function updateUserChat(message: string) {
 }
 
 async function fetchChatAPIOnce(message: string) {
-  let currentStopIndex = 0
+  let done = false // 请求是否已完成
+  let currentStopIndex = 0 // 当前句号索引
+  let fetchIndex = 0 // 当前音频获取序号
+  let voices: string[] = [] // 音频文件路径数组
+  let voicePlayIndex = 0 // 音频播放序号
+  let voicePlayAvailable = true // 音频播放是否可用
 
   await fetchChatAPIProcess<Chat.ConversationResponse>({
     prompt: message,
@@ -117,6 +123,54 @@ async function fetchChatAPIOnce(message: string) {
         console.log(sentence)
         // 更新句号index索引
         currentStopIndex += sentence.length
+
+        // 根据句子获取音频文件
+        if (voicePlayAvailable) {
+          fetchVoice(sentence).then(res => {
+            // 将获取到的音频文件路径存储到voices数组中
+            voices[fetchIndex] = res.data.file 
+            if (fetchIndex === 0) {
+              // 如果当前下载的音频是第一首，则直接播放
+              playVoice(0)
+            }
+          })
+          .catch(err => {
+            voicePlayAvailable = false
+            console.log("音频获取失败：本条消息不再获取音频，请检查本地是否开启AI音频服务")
+            notification.error({
+              content: '音频获取失败',
+              meta: '本条消息不再获取音频，请检查本地是否开启AI音频服务',
+              duration: 2500,
+              keepAliveOnHover: true
+            })
+            console.log(err)
+          })
+
+          fetchIndex++
+        } 
+
+        // 播放指定index音频
+        function playVoice(index: number) {
+          // 指定index不存在，或者已经播放完成，则不再播放
+          if (voices[index] && !done) {
+            console.log(`计划播放第 ${index + 1} 个音频`)
+            const audio = new Audio(voices[index]) // 播放音频
+            audio.play()
+            audio.onended = () => {
+              // 音频播放完成后，继续播放下一个音频文件
+              console.log(`第 ${index + 1} 个音频播放完毕`)
+              voicePlayIndex++
+              if (voicePlayIndex < fetchIndex || !done) {
+                playVoice(voicePlayIndex)
+              }
+            }
+          } else {
+            console.log(`第 ${index + 1} 个音频不存在，等待500秒`)
+            setTimeout(() => {
+              playVoice(index)
+            }, 500) // 如果当前音频还没有下载好对应索引不存在，等待0.5秒后再次尝试播放
+          }
+        }
       }
 
       try {
@@ -133,16 +187,14 @@ async function fetchChatAPIOnce(message: string) {
             requestOptions: { prompt: message },
           },
         )
-
-
-
         scrollToBottom()
       }
-      catch (error) {
-      //
-      }
+      catch (error) {}
     },
   })
+
+  // 文字请求完成标识置为true
+  done = true
 }
 
 async function onUpdateReply(message: string) {

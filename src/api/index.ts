@@ -34,6 +34,14 @@ export function fetchChatAPIProcess<T = any>(
   })
 }
 
+// 获取对应文本语音
+export function fetchVoice( text: string ) {
+  return post({
+    url: '/get-voice',
+    data: { text: text }
+  })
+}
+
 // export function fetchSession<T>() {
 //   return post<T>({
 //     url: '/session',
