@@ -7,6 +7,8 @@ app = Flask(__name__,
             static_folder='static',
             template_folder="./static",
             )
+            
+proxies = {'http': 'http://127.0.0.1:7890', 'https': 'http://127.0.0.1:7890'}
 
 # 获取当前 Python 文件的路径
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -36,8 +38,10 @@ def chat_process():
     sanbing_gpt_response = requests.post(
         url, 
         json=data,
-        stream = True
-        )
+        stream = True,
+        proxies=proxies,
+        verify=False
+    )
         
     def generate():
         full_text = ''
