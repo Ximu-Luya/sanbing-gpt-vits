@@ -49,8 +49,8 @@ export default {
   },
   setting: {
     setting: '设置',
-    general: '关于',
-    config: '配置',
+    general: '设置',
+    config: '关于',
     avatarLink: '头像链接',
     name: '名称',
     description: '描述',
