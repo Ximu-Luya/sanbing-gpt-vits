@@ -37,8 +37,17 @@ export function fetchChatAPIProcess<T = any>(
 // 获取对应文本语音
 export function fetchVoice( text: string ) {
   return post({
-    url: '/get-voice',
-    data: { text: text }
+    url: 'http://127.0.0.1:7860/run/predict',
+    data: {
+      "fn_index": 0,
+      "data": [
+        text,
+        "scaramouche",
+        "简体中文",
+        1
+      ],
+      "session_hash": "iribhymowma123"
+    }
   })
 }
 

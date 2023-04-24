@@ -126,24 +126,25 @@ async function fetchChatAPIOnce(message: string) {
 
         // 根据句子获取音频文件
         if (voicePlayAvailable) {
+          const index = fetchIndex
           fetchVoice(sentence).then(res => {
             // 将获取到的音频文件路径存储到voices数组中
-            voices[fetchIndex] = res.data.file 
-            if (fetchIndex === 0) {
+            voices[index] = res.data[1].name
+            if (index === 0) {
               // 如果当前下载的音频是第一首，则直接播放
               playVoice(0)
             }
           })
           .catch(err => {
             voicePlayAvailable = false
-            console.log("音频获取失败：本条消息不再获取音频，请检查本地是否开启AI音频服务")
+            console.error("音频获取失败：本条消息不再获取音频，请检查本地是否开启AI音频服务")
             notification.error({
               content: '音频获取失败',
               meta: '本条消息不再获取音频，请检查本地是否开启AI音频服务',
               duration: 2500,
               keepAliveOnHover: true
             })
-            console.log(err)
+            console.error(err)
           })
 
           fetchIndex++
@@ -152,20 +153,22 @@ async function fetchChatAPIOnce(message: string) {
         // 播放指定index音频
         function playVoice(index: number) {
           // 指定index不存在，或者已经播放完成，则不再播放
-          if (voices[index] && !done) {
+          if (voices[index]) {
             console.log(`计划播放第 ${index + 1} 个音频`)
-            const audio = new Audio(voices[index]) // 播放音频
+            const audio = new Audio("http://127.0.0.1:7860/file=" + voices[index]) // 播放音频
             audio.play()
             audio.onended = () => {
               // 音频播放完成后，继续播放下一个音频文件
               console.log(`第 ${index + 1} 个音频播放完毕`)
               voicePlayIndex++
               if (voicePlayIndex < fetchIndex || !done) {
-                playVoice(voicePlayIndex)
+                setTimeout(() => {
+                  playVoice(voicePlayIndex)
+                }, 500)
               }
             }
           } else {
-            console.log(`第 ${index + 1} 个音频不存在，等待500秒`)
+            console.log(`第 ${index + 1} 个音频不存在，等待500毫秒`)
             setTimeout(() => {
               playVoice(index)
             }, 500) // 如果当前音频还没有下载好对应索引不存在，等待0.5秒后再次尝试播放
