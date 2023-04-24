@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
-import { NButton, NInput, NPopconfirm, NSelect, useMessage, NSwitch } from 'naive-ui'
+import { NButton, NInput, NPopconfirm, NSelect, useMessage, NSwitch, NPopover } from 'naive-ui'
 import type { Language, Theme } from '@/store/modules/app/helper'
 import { SvgIcon } from '@/components/common'
 import { useAppStore, useUserStore } from '@/store'
@@ -239,6 +239,39 @@ function handleChangeVoiceEngineAvailable(value: boolean): void {
             已关闭
           </template>
         </NSwitch>
+
+        <NPopover style="max-width: 250px" trigger="click">
+          <template #trigger>
+            <NButton quaternary circle type="primary">
+              <template #icon>
+                <SvgIcon class="text-lg" icon="material-symbols:help-outline" />
+              </template>
+            </NButton>
+          </template>
+          <p>
+            本地AI引擎服务由于技术原因暂仅支持Windows端（
+            <a
+              class="text-blue-600 dark:text-blue-500" 
+              target="_blank"
+              href="https://pan.baidu.com/s/11UYBmZe0pzxKSllr3CeMVA?pwd=7777"
+            >点击下载-百度网盘467MB</a>
+            ），未来计划服务器提供AI音频生成服务。
+          </p>
+          <p>
+            欢迎到<a
+              class="text-blue-600 dark:text-blue-500" 
+              target="_blank"
+              href="https://huggingface.co/spaces/Ximu/sanbing-gpt-vits"
+            >
+              HuggingFace-Space: Ximu/sanbing-vits
+            </a>
+            上体验到AI模型效果。
+          </p>
+          <p>
+            本模型使用了154条语音数据，在 A100-40G 显卡上训练了约3小时、8000步。
+            对剧情中已有的台词有较好的生成效果，但对于新的台词生成效果一般。
+          </p>
+        </NPopover>
       </div>
     </div>
   </div>

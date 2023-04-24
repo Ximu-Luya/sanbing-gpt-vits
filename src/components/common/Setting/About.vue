@@ -36,7 +36,7 @@ const loading = ref(false)
   <NSpin :show="loading">
     <div class="p-4 space-y-4">
       <h2 class="text-xl font-bold">
-        Version - 散兵实时交谈
+        AI散兵实时交谈 - V1.0.0
       </h2>
       <div class="p-2 space-y-2 rounded-md bg-neutral-100 dark:bg-neutral-700">
         <p>
