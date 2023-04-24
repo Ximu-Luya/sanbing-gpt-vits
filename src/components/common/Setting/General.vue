@@ -254,7 +254,7 @@ function handleChangeVoiceEngineAvailable(value: boolean): void {
               class="text-blue-600 dark:text-blue-500" 
               target="_blank"
               href="https://pan.baidu.com/s/11UYBmZe0pzxKSllr3CeMVA?pwd=7777"
-            >点击下载-百度网盘467MB</a>
+            >点击下载-百度网盘467MB | 解压密码：ximu</a>
             ），未来计划服务器提供AI音频生成服务。
           </p>
           <p>

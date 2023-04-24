@@ -138,11 +138,10 @@ async function fetchChatAPIOnce(message: string) {
           })
           .catch(err => {
             appStore.setVoiceEngineAvailable(false)
-            console.error("AI音频生成失败：不再AI生成音频，请检查本地是否已启动AI音频服务。启动后可以在设置中再次打开AI服务开关")
+            console.error("AI音频生成失败：不再AI生成音频，请检查本地是否已启动AI音频引擎服务。详细信息请点击查看设置中AI引擎开关旁的帮助图标，启动后在设置中再次打开AI引擎开关即可。")
             notification.error({
               content: 'AI音频生成失败',
-              meta: '不再AI生成音频，请检查本地是否已启动AI音频服务。启动后可以在设置中再次打开AI服务开关',
-              duration: 5000,
+              meta: '不再AI生成音频，请检查本地是否已启动AI音频引擎服务。详细信息请点击查看设置中AI引擎开关旁的帮助图标，启动后在设置中再次打开AI引擎开关即可。',
               keepAliveOnHover: true
             })
             console.error(err)
