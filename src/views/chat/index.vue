@@ -98,6 +98,53 @@ function updateUserChat(message: string) {
   scrollToBottom()
 }
 
+async function fetchChatAPIOnce(message: string) {
+  let currentStopIndex = 0
+
+  await fetchChatAPIProcess<Chat.ConversationResponse>({
+    prompt: message,
+    signal: controller.signal,
+    onDownloadProgress: ({ event }) => {
+      const xhr = event.target
+      const { responseText } = xhr
+      // console.log(responseText)
+      // 找出待处理句子（上一个句号到句子最后。）
+      const pendingSentence = responseText.substring(currentStopIndex)
+      // 待处理句子中是否有句号
+      if(pendingSentence.indexOf("。") >= 0) {
+        // 根据句号index截取句子
+        const sentence =  pendingSentence.substring(0, pendingSentence.indexOf("。") + 1)
+        console.log(sentence)
+        // 更新句号index索引
+        currentStopIndex += sentence.length
+      }
+
+      try {
+        updateChat(
+          +uuid,
+          dataSources.value.length - 1,
+          {
+            dateTime: new Date().toLocaleString(),
+            text: responseText ?? '',
+            inversion: false,
+            error: false,
+            loading: false,
+            conversationOptions: null,
+            requestOptions: { prompt: message },
+          },
+        )
+
+
+
+        scrollToBottom()
+      }
+      catch (error) {
+      //
+      }
+    },
+  })
+}
+
 async function onUpdateReply(message: string) {
   loading.value = true
   prompt.value = ''
@@ -131,60 +178,8 @@ async function onUpdateReply(message: string) {
 
   console.log(options)
   try {
-    const fetchChatAPIOnce = async () => {
-      await fetchChatAPIProcess<Chat.ConversationResponse>({
-        prompt: message,
-        options,
-        signal: controller.signal,
-        onDownloadProgress: ({ event }) => {
-          const xhr = event.target
-          const { responseText } = xhr
-          console.log(responseText)
-          try {
-            updateChat(
-              +uuid,
-              dataSources.value.length - 1,
-              {
-                dateTime: new Date().toLocaleString(),
-                text: responseText ?? '',
-                inversion: false,
-                error: false,
-                loading: false,
-                conversationOptions: null,
-                requestOptions: { prompt: message, options: { ...options } },
-              },
-            )
-
-            // TODO： 这里的updateChatSome未生效，可以讨论一下
-            // console.log('用户',conversationList.value[conversationList.value.length - 2]?.conversationOptions?.wrappedPrompt)
-            // updateChatSome(
-            //   +uuid,
-            //   dataSources.value.length - 2,
-            //   {
-            //     conversationOptions: { 
-            //       wrappedPrompt: data.wrappedPrompt
-            //     },
-            //   },
-            // )
-
-            // if (openLongReply && data.detail.choices[0].finish_reason === 'length') {
-            //   options.parentMessageId = data.id
-            //   lastText = data.text
-            //   message = ''
-            //   return fetchChatAPIOnce()
-            // }
-
-            scrollToBottom()
-          }
-          catch (error) {
-          //
-          }
-        },
-      })
-    }
-
     appStore.setChatDataLoading(true)
-    await fetchChatAPIOnce()
+    await fetchChatAPIOnce(message)
   }
   catch (error: any) {
     const errorMessage = error?.message ?? t('common.wrong')
@@ -275,56 +270,8 @@ async function onRegenerate(index: number) {
   )
 
   try {
-    const fetchChatAPIOnce = async () => {
-      await fetchChatAPIProcess<Chat.ConversationResponse>({
-        prompt: message,
-        options,
-        signal: controller.signal,
-        onDownloadProgress: ({ event }) => {
-          const xhr = event.target
-          const { responseText } = xhr
-          // Always process the final line
-          console.log(responseText)
-          try {
-            updateChat(
-              +uuid,
-              index,
-              {
-                dateTime: new Date().toLocaleString(),
-                text: responseText ?? '',
-                inversion: false,
-                error: false,
-                loading: false,
-                conversationOptions: null,
-                requestOptions: { prompt: message, options: { ...options } },
-              },
-            )
-
-            // updateChatSome(
-            //   +uuid,
-            //   index-1,
-            //   {
-            //     conversationOptions: { 
-            //       wrappedPrompt: data.wrappedPrompt
-            //     },
-            //   },
-            // )
-
-            // if (openLongReply && data.detail.choices[0].finish_reason === 'length') {
-            //   options.parentMessageId = data.id
-            //   lastText = data.text
-            //   message = ''
-            //   return fetchChatAPIOnce()
-            // }
-          }
-          catch (error) {
-            //
-          }
-        },
-      })
-    }
     appStore.setChatDataLoading(true)
-    await fetchChatAPIOnce()
+    await fetchChatAPIOnce(message)
   }
   catch (error: any) {
     if (error.message === 'canceled') {

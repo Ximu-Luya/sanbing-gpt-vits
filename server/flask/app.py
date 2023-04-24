@@ -50,8 +50,8 @@ def chat_process():
             if chunk:
                 chunk_str = chunk.decode('utf-8')
                 full_text += chunk_str
-                print(full_text)
                 yield chunk
+        print(full_text)
     
     response = Response(stream_with_context(generate()), 
                     content_type = 'application/json')
