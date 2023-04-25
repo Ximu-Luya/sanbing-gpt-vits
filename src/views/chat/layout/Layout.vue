@@ -112,7 +112,7 @@ onMounted(() => {
   transform: translate(-50%, -50%) scale(4.5);
 }
 
-.n-layout-sider-scroll-container{
+.lihui-container .n-layout-sider-scroll-container{
   display: flex;
   align-items: center;
 }
