@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import { computed } from 'vue'
-import { NLayout, NLayoutContent, NLayoutSider, NImage } from 'naive-ui'
+import { NLayout, NLayoutContent, NLayoutSider, NImage, NButton } from 'naive-ui'
 import sanbing_lihui from '@/assets/sanbing_lihui.png'
 // @ts-ignore
 import { JsonViewer } from "vue3-json-viewer"
@@ -41,7 +41,7 @@ const getContainerClass = computed(() => {
 const chatDataViewerCollapsed = computed(() => appStore.chatDataViewerCollapsed)
 
 function handleUpdateCollapsed() {
-  appStore.setChatDataViewerCollapsed(!chatDataViewerCollapsed.value)
+  appStore.setChatDataViewerCollapsed(true)
 }
 
 onMounted(() => {
@@ -69,9 +69,8 @@ onMounted(() => {
           :width="500"
           :native-scrollbar="true"
           show-trigger="arrow-circle"
-          content-style="padding: 24px;"
           bordered
-          class="right-sider-container"
+          class="right-sider-container lihui-container"
           @update-collapsed="handleUpdateCollapsed"
         >
           <NImage
@@ -79,6 +78,13 @@ onMounted(() => {
             class="lihui-img"
             :src="sanbing_lihui"
           />
+          <NButton
+            v-if="isMobile"
+            type="primary"
+            round
+            class="join-in-chat-btn"
+            @click="handleUpdateCollapsed"
+          >进入聊天</NButton>
         </NLayoutSider>
       </NLayout>
     </div>
@@ -104,5 +110,16 @@ onMounted(() => {
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%) scale(4.5);
+}
+
+.n-layout-sider-scroll-container{
+  display: flex;
+  align-items: center;
+}
+
+.join-in-chat-btn {
+  display: block !important;
+  margin-left: 20px !important;
+  z-index: 99 !important;
 }
 </style>
