@@ -33,3 +33,5 @@ coverage
 .DS_Store
 .metals
 push.sh
+
+package-lock.json
