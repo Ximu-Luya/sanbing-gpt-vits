@@ -10,11 +10,7 @@
 
 ### Node
 
-`node` 需要 `^16 || ^18 || ^19` 版本（`node >= 14` 需要安装 [fetch polyfill](https://github.com/developit/unfetch#usage-as-a-polyfill)），使用 [nvm](https://github.com/nvm-sh/nvm) 可管理本地多个 `node` 版本
-
-```shell
-node -v
-```
+`node` 需要 `^16 || ^18 || ^19` 版本
 
 ### 后端
 
@@ -93,12 +89,12 @@ services:
 
 #### 前端网页
 
-1、根目录下运行以下命令，然后将 `dist` 文件夹内的文件复制到你网站服务的根目录下
+根目录下运行以下命令，然后将 `dist` 文件夹内的文件复制到你网站服务的根目录下
 
 [参考信息](https://cn.vitejs.dev/guide/static-deploy.html#building-the-app)
 
 ```shell
-pnpm build
+npm build
 ```
 
 ## 常见问题
@@ -107,4 +103,4 @@ Q: 前端没有打字机效果？
 A: 一种可能原因是经过 Nginx 反向代理，开启了 buffer，则 Nginx 会尝试从后端缓冲一定大小的数据再发送给浏览器。请尝试在反代参数后添加 `proxy_buffering off;`，然后重载 Nginx。其他 web server 配置同理。
 
 ## License
-MIT © [ChenZhaoYu](./license)
+MIT © [ChenZhaoYu | XimuLuya](./license)
