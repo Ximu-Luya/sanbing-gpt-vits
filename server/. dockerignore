@@ -1,0 +1,5 @@
+.generating
+__pycache__
+logs
+.venv
+test

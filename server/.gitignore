@@ -1,1 +1,4 @@
-*.pyc
+__pycache__
+# milvus本地持久化数据
+server/milvus_data
+server/server/db/milvus/data
