@@ -19,7 +19,7 @@ def memory_create():
     memory_block_embedding = llm.get_embedding(memory_block)
 
     print('2. 将记忆片段存入 Milvus 集合')
-    res = milvus_insert('zhuge_page_knowledge', {
+    res = milvus_insert('sanbing_memory', {
         'content': memory_block,  # content 字段的值
         'embedding': memory_block_embedding,  # embedding 字段的值
     })
@@ -41,7 +41,7 @@ def memory_create():
 @memory.route('/api/memory/get', methods=['GET'])
 def knowledge_get():
     # 从知识库库中检索相关的知识片段
-    response = milvus_query('zhuge_page_knowledge')
+    response = milvus_query('sanbing_memory')
     result = []
     for item in response:
         obj = {
@@ -71,7 +71,7 @@ def memory_delete():
     memory_id = data['memoryId']
 
     # 从记忆库中删除记忆片段
-    res = milvus_delete('zhuge_page_knowledge', memory_id)
+    res = milvus_delete('sanbing_memory', memory_id)
     print('delete', res)
     return jsonify({"message": "记忆删除成功", "success": True})
 
@@ -86,7 +86,7 @@ def memory_update():
     print("1. 将修改后的记忆片段转为Embedding向量")
     embedding_data = llm.get_embedding(memory)
 
-    mr = milvus_update('zhuge_page_knowledge', {
+    mr = milvus_update('sanbing_memory', {
         'id': int(memory_id),
         'content': memory,  # content 字段的值
         'embedding': embedding_data,  # embedding 字段的值

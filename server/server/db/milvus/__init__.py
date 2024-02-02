@@ -12,12 +12,12 @@ connections.connect(
 
 from .init_db import init_collection
 # 如果集合不存在，则初始化集合
-if not utility.has_collection("zhuge_page_knowledge"):
-    init_collection("zhuge_page_knowledge", description="页面检索知识库")
+if not utility.has_collection("sanbing_memory"):
+    init_collection("sanbing_memory", description="散兵记忆库")
 
 # 加载集合
 collections = {
-    "zhuge_page_knowledge": Collection("zhuge_page_knowledge"),
+    "sanbing_memory": Collection("sanbing_memory"),
 }
 for collection in collections.values():
     collection.load()

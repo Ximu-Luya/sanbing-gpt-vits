@@ -28,7 +28,7 @@ def seach_page(message: str, **kwargs):
     logger.debug(f"UUID：{uuid}; 转换Embedded向量成功")
     
     # 根据Embedded向量，查询页面知识向量数据库
-    page_knowledge_data = milvus_search('zhuge_page_knowledge', embedding_data)
+    page_knowledge_data = milvus_search('sanbing_memory', embedding_data)
     logger.debug(f"UUID：{uuid}; 查询知识数据库成功")
 
     # 页面知识库内容封装
