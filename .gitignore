@@ -35,3 +35,4 @@ coverage
 push.sh
 
 package-lock.json
+.venv
