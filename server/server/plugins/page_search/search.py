@@ -10,7 +10,7 @@ from server.logger import setup_logger
 logger = setup_logger('page_search')
 
 def seach_page(message: str, **kwargs):
-    """页面检索处理逻辑"""
+    """记忆检索处理逻辑"""
     uuid = kwargs.get('uuid', str(uuid4()))
     misid = kwargs.get('misid', 'none')
     dialogue = kwargs.get('dialogue', '无')
@@ -27,27 +27,27 @@ def seach_page(message: str, **kwargs):
         return
     logger.debug(f"UUID：{uuid}; 转换Embedded向量成功")
     
-    # 根据Embedded向量，查询页面知识向量数据库
+    # 根据Embedded向量，查询记忆知识向量数据库
     page_knowledge_data = milvus_search('sanbing_memory', embedding_data)
     logger.debug(f"UUID：{uuid}; 查询知识数据库成功")
 
-    # 页面知识库内容封装
+    # 记忆知识库内容封装
     related_page_knowledges = ""
     log_data = ""
     if page_knowledge_data:
         for index, page_knowledge_item in enumerate(page_knowledge_data):
             page_knowledge = page_knowledge_item['content']
-            # 获取首行内容（页面链接：[判责方案管理](/judgeDutyCenter/dutyPrecept#/dutyPreceptMng)）中的markdown页面链接
+            # 获取首行内容（记忆链接：[判责方案管理](/judgeDutyCenter/dutyPrecept#/dutyPreceptMng)）中的markdown记忆链接
             match = re.search(r'\[.*\]\(.*\)', page_knowledge)
             page_link = match.group(0) if match else ''
-            # 页面知识库内容添加到‘相关页面知识’中
+            # 记忆知识库内容添加到‘相关记忆知识’中
             related_page_knowledges += f"{page_knowledge.strip()}\n"
             # 日志输出存储
             log_data += f"----\n{page_link.strip()}\n相似度：{1 - page_knowledge_item['similarity'][index]}\n"
-        logger.debug(f"UUID：{uuid}; 匹配到页面：\n{log_data}")
+        logger.debug(f"UUID：{uuid}; 匹配到记忆：\n{log_data}")
     else:
-        related_page_knowledges = "没有匹配到相关页面。"
-        logger.debug(f"UUID：{uuid}; 没有匹配到相关页面")
+        related_page_knowledges = "没有匹配到相关记忆。"
+        logger.debug(f"UUID：{uuid}; 没有匹配到相关记忆")
 
     # 生成GPT提示词消息列表
     messages = generate_prompt(message, page_search_data=related_page_knowledges, dialogue=dialogue)

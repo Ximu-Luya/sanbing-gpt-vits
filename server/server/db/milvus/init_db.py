@@ -51,7 +51,7 @@ def init_collection(collection_name: str, description: str = None):
     #                 "content": row['content'],
     #                 "embedding": json.loads(row['embedding'])
     #             }])
-    #             print("Insert data: ", row["content"].split('\n')[0].replace("页面链接：", ""))
+    #             print("Insert data: ", row["content"].split('\n')[0].replace("记忆链接：", ""))
     # except Exception as e:
     #     # 导入数据异常时，删除集合
     #     collection.drop()

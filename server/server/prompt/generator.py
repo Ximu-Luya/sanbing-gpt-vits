@@ -31,9 +31,4 @@ class ThoughtChainPromptGenerator:
 # 测试用例
 if __name__ == "__main__":
     generator = ThoughtChainPromptGenerator()
-    generator.add_goal("我要查找人员信息")
-    generator.add_constraint("不要虚构不存在的页面")
-    generator.add_resource("页面1与其功能描述")
-    generator.add_resource("页面2与其功能描述")
-    generator.add_resource("页面3与其功能描述")
     print(generator.generate_prompt())

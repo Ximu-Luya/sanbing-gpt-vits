@@ -19,7 +19,7 @@ def chat_api():
     if message == '':
         return stream_conroller.send_message(message="用户消息不能为空", success=False)
     
-    # 生成页面检索处理逻辑的生成器
+    # 生成记忆检索处理逻辑的生成器
     handler_steam_generator = seach_page(
         message,
         uuid=uuid,
