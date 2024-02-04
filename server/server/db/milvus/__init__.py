@@ -13,6 +13,7 @@ connections.connect(
 from .init_db import init_collection
 # 如果集合不存在，则初始化集合
 if not utility.has_collection("sanbing_memory"):
+    print("记忆数据集合不存在，初始化集合")
     init_collection("sanbing_memory", description="散兵记忆库")
 
 # 加载集合

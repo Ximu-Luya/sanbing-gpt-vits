@@ -9,33 +9,24 @@ memory = Blueprint('memory', __name__)
 @memory.route('/api/memory/create', methods=['POST'])
 def memory_create():
     data = request.get_json()
-    memory_block = data['memory']
-    if memory_block == "":
+
+    if data['memory'] == "":
         return jsonify({"result": "失败，记忆片段为空"})
-    print(memory_block)
 
     # 将记忆片段转为Embedding向量
     print('1. 将记忆片段转为Embedding向量')
-    memory_block_embedding = llm.get_embedding(memory_block)
+    memory_block_embedding = llm.get_embedding(data['memory'])
 
     print('2. 将记忆片段存入 Milvus 集合')
     res = milvus_insert('sanbing_memory', {
-        'content': memory_block,  # content 字段的值
+        'content': data['memory'],  # content 字段的值
+        'title': data['title'],  # title 字段的值
         'embedding': memory_block_embedding,  # embedding 字段的值
     })
 
     print('插入数据', res)
     return jsonify({"message": "记忆创建成功", "success": True})
 
-
-# 知识检索
-# @memory.route('/api/memory/get', methods=['GET'])
-# def knowledge_get():
-#     # 从知识库库中检索相关的知识片段
-#     response = db.table('zhuege_knowledge_base').select('id', 'content').order('id').execute()
-#     memories = response.data
-#     print(f"获取到记忆 {memories.__len__()} 条")
-#     return jsonify({"memories": memories})
 
 # milvus知识检索
 @memory.route('/api/memory/get', methods=['GET'])
@@ -51,18 +42,6 @@ def knowledge_get():
         result.append(obj)
     print(f"获取到记忆 {result.__len__()} 条")
     return jsonify({"memories": result})
-
-
-# 记忆删除
-# @memory.route('/api/memory/delete', methods=['POST'])
-# def memory_delete():
-#     data = request.get_json()
-#     memory_id = data['memoryId']
-#
-#     # 从记忆库中删除记忆片段
-#     db.table('zhuege_knowledge_base').delete().eq('id', memory_id).execute()
-#     return jsonify({"message": "记忆删除成功", "success": True})
-
 
 # milvus记忆删除
 @memory.route('/api/memory/delete', methods=['POST'])

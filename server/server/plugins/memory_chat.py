@@ -7,50 +7,43 @@ from server import llm
 from server.db.milvus import milvus_search
 from server.logger import setup_logger
 
-logger = setup_logger('page_search')
+logger = setup_logger('memory_chat')
 
-def seach_page(message: str, **kwargs):
-    """记忆检索处理逻辑"""
+def memory_chat(message: str, **kwargs):
+    """依赖记忆进行对话"""
     uuid = kwargs.get('uuid', str(uuid4()))
-    misid = kwargs.get('misid', 'none')
     dialogue = kwargs.get('dialogue', '无')
     stream_conroller = kwargs.get('stream_conroller', None)
 
-    logger.info(f"UUID：{uuid}; 用户mis号：{misid}; 用户指令：{message};")
-
-    logger.debug(f"UUID：{uuid}; 用户指令：{message}; 开始转换Embedded向量")
+    logger.info(f"UUID：{uuid}; 用户指令：{message};")
+    
     try:
         embedding_data = llm.get_embedding(message)
+        logger.debug(f"UUID：{uuid}; 转换Embedded向量成功")
     except Exception as e:
         logger.error(f"UUID：{uuid}; 转换Embedded向量失败：{e}", exc_info=True)
         yield stream_conroller.send_message(message="转换Embedded向量失败", success=False)
         return
-    logger.debug(f"UUID：{uuid}; 转换Embedded向量成功")
     
     # 根据Embedded向量，查询记忆知识向量数据库
-    page_knowledge_data = milvus_search('sanbing_memory', embedding_data)
-    logger.debug(f"UUID：{uuid}; 查询知识数据库成功")
+    memory_data = milvus_search('sanbing_memory', embedding_data)
 
     # 记忆知识库内容封装
-    related_page_knowledges = ""
+    related_memories = ""
     log_data = ""
-    if page_knowledge_data:
-        for index, page_knowledge_item in enumerate(page_knowledge_data):
-            page_knowledge = page_knowledge_item['content']
-            # 获取首行内容（记忆链接：[判责方案管理](/judgeDutyCenter/dutyPrecept#/dutyPreceptMng)）中的markdown记忆链接
-            match = re.search(r'\[.*\]\(.*\)', page_knowledge)
-            page_link = match.group(0) if match else ''
-            # 记忆知识库内容添加到‘相关记忆知识’中
-            related_page_knowledges += f"{page_knowledge.strip()}\n"
+    if memory_data:
+        for index, memory_item in enumerate(memory_data):
+            memory = memory_item['content']
+            related_memories += f"{memory.strip()}\n"
             # 日志输出存储
-            log_data += f"----\n{page_link.strip()}\n相似度：{1 - page_knowledge_item['similarity'][index]}\n"
+            log_data += f"----\n{memory.title.strip()}\n相似度：{1 - memory_item['similarity'][index]}\n"
         logger.debug(f"UUID：{uuid}; 匹配到记忆：\n{log_data}")
     else:
-        related_page_knowledges = "没有匹配到相关记忆。"
+        related_memories = "没有匹配到相关记忆。"
         logger.debug(f"UUID：{uuid}; 没有匹配到相关记忆")
 
     # 生成GPT提示词消息列表
-    messages = generate_prompt(message, page_search_data=related_page_knowledges, dialogue=dialogue)
+    messages = generate_prompt(message, related_memories=related_memories, dialogue=dialogue)
     logger.debug(f"UUID：{uuid}; prompt封装，调用GPT生成回复：\n{json.dumps(messages, indent=4, ensure_ascii=False)}")
 
     # 调用GPT生成回复
@@ -68,7 +61,7 @@ def seach_page(message: str, **kwargs):
         yield stream_conroller.send_message(message="GPT接口失败", success=False)
         return
 
-def generate_prompt(message: str, dialogue: str = '', page_search_data: str = '') -> list:
+def generate_prompt(message: str, dialogue: str = '', related_memories: str = '') -> list:
     """生成GPT提示词消息列表"""
     def _system_message():
         """系统消息生成，主要用于确定角色设定"""
@@ -84,13 +77,13 @@ def generate_prompt(message: str, dialogue: str = '', page_search_data: str = ''
             {setting_message}
             ----
             本次对话相关信息：
-            {page_search_data}
+            {related_memories}
             ----
             下面是我说的话：
             {message}
         """).format(
             setting_message=_setting_message(),
-            page_search_data=page_search_data,
+            related_memories=related_memories,
             dialogue=dialogue,
             message=message
         )

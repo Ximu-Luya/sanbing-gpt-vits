@@ -2,7 +2,7 @@ from flask import Blueprint, request, stream_with_context, Response
 import json
 from uuid import uuid4
 
-from server.plugins.page_search.search import seach_page
+from server.plugins.memory_chat import memory_chat
 chat = Blueprint('chat', __name__)
 
 @chat.route('/api/chat', methods=['POST'])
@@ -10,7 +10,6 @@ def chat_api():
     data = request.get_json()
     message = data.get('message', '')
     dialogue = data.get('dialogue', '无')
-    misid = request.cookies.get('hd_user_mis', 'none')
 
     uuid = str(uuid4())
     stream_conroller = StreamConroller(uuid)
@@ -20,10 +19,9 @@ def chat_api():
         return stream_conroller.send_message(message="用户消息不能为空", success=False)
     
     # 生成记忆检索处理逻辑的生成器
-    handler_steam_generator = seach_page(
+    handler_steam_generator = memory_chat(
         message,
         uuid=uuid,
-        misid=misid,
         dialogue=dialogue,
         stream_conroller=stream_conroller
     )
