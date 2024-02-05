@@ -34,7 +34,7 @@ def milvus_query(collection_name, **kwargs):
 
     params = {
         'expr': 'id > 0',
-        'output_fields': ['id', 'content'],
+        'output_fields': ['id', 'content', 'title'],
         **kwargs
     }
     res = collection.query(**params)
@@ -57,7 +57,7 @@ def milvus_search(collection_name, embedding_data, **kwargs):
         "param": search_params,
         "limit": 5,
         "expr": 'id > 0',
-        "output_fields": ['id', 'content'],
+        "output_fields": ['id', 'content', 'title'],
         "consistency_level": "Strong",
         **kwargs
     }
@@ -69,6 +69,7 @@ def milvus_search(collection_name, embedding_data, **kwargs):
             result.append({
                 "id": hit.entity.get('id'),
                 "content": hit.entity.get('content'),
+                "title": hit.entity.get('title'),
                 "similarity": hits.distances
             })
     return result

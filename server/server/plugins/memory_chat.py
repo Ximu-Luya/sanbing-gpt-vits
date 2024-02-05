@@ -36,7 +36,7 @@ def memory_chat(message: str, **kwargs):
             memory = memory_item['content']
             related_memories += f"{memory.strip()}\n"
             # 日志输出存储
-            log_data += f"----\n{memory.title.strip()}\n相似度：{1 - memory_item['similarity'][index]}\n"
+            log_data += f"----\n{memory_item['title'].strip()}\n相似度：{1 - memory_item['similarity'][index]}\n"
         logger.debug(f"UUID：{uuid}; 匹配到记忆：\n{log_data}")
     else:
         related_memories = "没有匹配到相关记忆。"
