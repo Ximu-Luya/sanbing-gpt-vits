@@ -1,3 +1,4 @@
 __pycache__
 # milvus本地持久化数据
 milvus_data
+.env

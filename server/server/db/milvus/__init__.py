@@ -55,7 +55,7 @@ def milvus_search(collection_name, embedding_data, **kwargs):
         "data": [embedding_data],
         "anns_field": "embedding",
         "param": search_params,
-        "limit": 5,
+        "limit": 2,
         "expr": 'id > 0',
         "output_fields": ['id', 'content', 'title'],
         "consistency_level": "Strong",
