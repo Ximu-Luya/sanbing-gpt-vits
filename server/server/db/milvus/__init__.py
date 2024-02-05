@@ -2,13 +2,15 @@ from pymilvus import connections, Collection, utility
 from .start_db import start_milvus
 
 # 启动 Milvus Lite 服务
-start_milvus()
+# start_milvus()
 
 # 连接 Milvus Lite 服务
+print("开始连接 Milvus Lite 服务……")
 connections.connect(
-    host='127.0.0.1',
+    host='0.0.0.0',
     port=19530
 )
+print("连接 Milvus Lite 服务 成功")
 
 from .init_db import init_collection
 # 如果集合不存在，则初始化集合

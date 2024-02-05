@@ -50,14 +50,17 @@ def init_collection(collection_name: str, description: str = None):
     try:
         with open(file_path, newline='') as csvfile:
             reader = csv.DictReader(csvfile, delimiter=',', quotechar='"')
-            from . import milvus_insert
-            for row in reader:
-                milvus_insert(collection_name, {
+            connetcion_data = []
+            for index, row in enumerate(reader):
+                # 使用行序号index作为id
+                connetcion_data.append({
+                    "id": index+1,
                     "content": row['content'],
                     "title": row['title'],
                     "embedding": json.loads(row['embedding'])
                 })
-                print("Insert data: ", row["content"].split('\n')[0].replace("记忆链接：", ""))
+            
+            collection.insert(connetcion_data)
     except Exception as e:
         # 导入数据异常时，删除集合
         collection.drop()
