@@ -12,23 +12,33 @@
 
 `node` 需要 `^16 || ^18 || ^19` 版本
 
-### 后端
-
-进入文件夹 `/server` 安装python依赖
-```shell
-pip install -r requirements.txt
-```
-
-运行命令，启动服务
-```shell
-flask run
-```
-
 ### 前端
 根目录下运行以下命令启动前端开发服务器
 
 ```shell
 npm run dev
+```
+
+### 后端服务
+注：直接运行相对较为麻烦，推荐使用 Docker 运行
+
+1. 进入文件夹 `/server` 安装python依赖
+```shell
+pip install -r requirements.txt
+```
+
+2. 在 `/server` 目录下运行 `milvus-server --system-log-level warn --data milvus_data` 启动 Milvus Lite 服务
+
+3. 在 `/server` 目录下复制 `.env.template` 文件，修改为 `.env` 文件，填写 Azure 服务的相关信息
+
+```
+AZURE_BASE_URL=your-azure-base-url
+AZURE_API_KEY=your-azure-api-key
+```
+
+4. 在 `/server` 目录下，新启动一个命令行运行命令，启动后端服务
+```shell
+flask run -p 7777
 ```
 
 ## 打包
