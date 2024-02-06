@@ -1,0 +1,53 @@
+2024-02-05 14:06:06,796 - ERROR - memory_chat.py - memory_chat - 24 - UUID：a768b27d-7fd3-46d0-8274-b1c75361cc8b; 转换Embedded向量失败：404 Client Error: Resource Not Found for url: http://ximu.openai.azure.com/openai/deployments/text-embedding-ada-002/embeddings?api-version=2023-05-15
+Traceback (most recent call last):
+  File "/Users/ximu/other/sanbing-gpt-vits/server/server/plugins/memory_chat.py", line 21, in memory_chat
+    embedding_data = llm.get_embedding(message)
+  File "/Users/ximu/other/sanbing-gpt-vits/server/server/llm/__init__.py", line 15, in get_embedding
+    return friday.get_embedding(text)
+  File "/Users/ximu/other/sanbing-gpt-vits/server/server/llm/provider/friday.py", line 33, in get_embedding
+    response = _request_data(
+  File "/Users/ximu/other/sanbing-gpt-vits/server/server/llm/provider/friday.py", line 113, in _request_data
+    response = _request()
+  File "/Users/ximu/other/sanbing-gpt-vits/.venv/lib/python3.9/site-packages/retrying.py", line 56, in wrapped_f
+    return Retrying(*dargs, **dkw).call(f, *args, **kw)
+  File "/Users/ximu/other/sanbing-gpt-vits/.venv/lib/python3.9/site-packages/retrying.py", line 266, in call
+    raise attempt.get()
+  File "/Users/ximu/other/sanbing-gpt-vits/.venv/lib/python3.9/site-packages/retrying.py", line 301, in get
+    six.reraise(self.value[0], self.value[1], self.value[2])
+  File "/Users/ximu/other/sanbing-gpt-vits/.venv/lib/python3.9/site-packages/six.py", line 719, in reraise
+    raise value
+  File "/Users/ximu/other/sanbing-gpt-vits/.venv/lib/python3.9/site-packages/retrying.py", line 251, in call
+    attempt = Attempt(fn(*args, **kwargs), attempt_number, False)
+  File "/Users/ximu/other/sanbing-gpt-vits/server/server/llm/provider/friday.py", line 110, in _request
+    response.raise_for_status()
+  File "/Users/ximu/other/sanbing-gpt-vits/.venv/lib/python3.9/site-packages/requests/models.py", line 1021, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 404 Client Error: Resource Not Found for url: http://ximu.openai.azure.com/openai/deployments/text-embedding-ada-002/embeddings?api-version=2023-05-15
+2024-02-05 14:24:18,714 - ERROR - memory_chat.py - memory_chat - 60 - UUID：73d9532c-a531-49b4-9712-a3e9d647468b; 用户指令：你好; GPT回复失败：'content'
+Traceback (most recent call last):
+  File "/Users/ximu/other/sanbing-gpt-vits/server/server/plugins/memory_chat.py", line 53, in memory_chat
+    for chunk, isLastOne in stream_generator:
+  File "/Users/ximu/other/sanbing-gpt-vits/server/server/llm/provider/friday.py", line 75, in friday_generate
+    reply = chunk_json['content']
+KeyError: 'content'
+2024-02-05 14:31:30,056 - ERROR - memory_chat.py - memory_chat - 60 - UUID：8eb2827c-e5b8-4239-86b0-9ef3243e8348; 用户指令：你好; GPT回复失败：list index out of range
+Traceback (most recent call last):
+  File "/Users/ximu/other/sanbing-gpt-vits/server/server/plugins/memory_chat.py", line 53, in memory_chat
+    for chunk, isLastOne in stream_generator:
+  File "/Users/ximu/other/sanbing-gpt-vits/server/server/llm/provider/friday.py", line 73, in friday_generate
+    reply = chunk_json['choices'][0]['delta'].get('content', '')
+IndexError: list index out of range
+2024-02-05 14:32:58,741 - ERROR - memory_chat.py - memory_chat - 60 - UUID：4e5f641b-5769-4f16-8153-7b92852e63eb; 用户指令：你好; GPT回复失败：list index out of range
+Traceback (most recent call last):
+  File "/Users/ximu/other/sanbing-gpt-vits/server/server/plugins/memory_chat.py", line 53, in memory_chat
+    for chunk, isLastOne in stream_generator:
+  File "/Users/ximu/other/sanbing-gpt-vits/server/server/llm/provider/friday.py", line 74, in friday_generate
+    reply = chunk_json['choices'][0]
+IndexError: list index out of range
+2024-02-05 14:37:09,814 - ERROR - memory_chat.py - memory_chat - 60 - UUID：a262ce33-6948-4c94-a1ad-2e88ce3a4a76; 用户指令：你好; GPT回复失败：'lastOne'
+Traceback (most recent call last):
+  File "/Users/ximu/other/sanbing-gpt-vits/server/server/plugins/memory_chat.py", line 53, in memory_chat
+    for chunk, isLastOne in stream_generator:
+  File "/Users/ximu/other/sanbing-gpt-vits/server/server/llm/provider/friday.py", line 77, in friday_generate
+    if chunk_json['lastOne']:
+KeyError: 'lastOne'

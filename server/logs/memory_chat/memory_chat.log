@@ -1,0 +1,95 @@
+2024-02-05 10:59:32,217 - INFO - memory_chat.py - memory_chat - 18 - UUID：6bf1c9ef-df71-4abf-8b5c-050d907a7100; 用户指令：你好;
+2024-02-05 11:06:07,009 - INFO - memory_chat.py - memory_chat - 18 - UUID：382095a2-fe39-4326-bfab-e12b56dd55f1; 用户指令：你好;
+2024-02-05 11:07:29,374 - INFO - memory_chat.py - memory_chat - 18 - UUID：368fc4b0-408b-4bc0-baa7-9643faadfdea; 用户指令：你好;
+2024-02-05 11:08:41,835 - INFO - memory_chat.py - memory_chat - 18 - UUID：b83f799b-6b3b-4ed1-9f0b-6e8d052b532b; 用户指令：你好;
+2024-02-05 14:02:14,615 - INFO - memory_chat.py - memory_chat - 18 - UUID：b8054bdf-fa16-44af-b7f5-3f600a369775; 用户指令：你好;
+2024-02-05 14:03:18,866 - INFO - memory_chat.py - memory_chat - 18 - UUID：172f6e9f-3bc6-4755-9628-fde730720bb5; 用户指令：你好;
+2024-02-05 14:06:03,570 - INFO - memory_chat.py - memory_chat - 18 - UUID：a768b27d-7fd3-46d0-8274-b1c75361cc8b; 用户指令：你好;
+2024-02-05 14:06:06,796 - ERROR - memory_chat.py - memory_chat - 24 - UUID：a768b27d-7fd3-46d0-8274-b1c75361cc8b; 转换Embedded向量失败：404 Client Error: Resource Not Found for url: http://ximu.openai.azure.com/openai/deployments/text-embedding-ada-002/embeddings?api-version=2023-05-15
+Traceback (most recent call last):
+  File "/Users/ximu/other/sanbing-gpt-vits/server/server/plugins/memory_chat.py", line 21, in memory_chat
+    embedding_data = llm.get_embedding(message)
+  File "/Users/ximu/other/sanbing-gpt-vits/server/server/llm/__init__.py", line 15, in get_embedding
+    return friday.get_embedding(text)
+  File "/Users/ximu/other/sanbing-gpt-vits/server/server/llm/provider/friday.py", line 33, in get_embedding
+    response = _request_data(
+  File "/Users/ximu/other/sanbing-gpt-vits/server/server/llm/provider/friday.py", line 113, in _request_data
+    response = _request()
+  File "/Users/ximu/other/sanbing-gpt-vits/.venv/lib/python3.9/site-packages/retrying.py", line 56, in wrapped_f
+    return Retrying(*dargs, **dkw).call(f, *args, **kw)
+  File "/Users/ximu/other/sanbing-gpt-vits/.venv/lib/python3.9/site-packages/retrying.py", line 266, in call
+    raise attempt.get()
+  File "/Users/ximu/other/sanbing-gpt-vits/.venv/lib/python3.9/site-packages/retrying.py", line 301, in get
+    six.reraise(self.value[0], self.value[1], self.value[2])
+  File "/Users/ximu/other/sanbing-gpt-vits/.venv/lib/python3.9/site-packages/six.py", line 719, in reraise
+    raise value
+  File "/Users/ximu/other/sanbing-gpt-vits/.venv/lib/python3.9/site-packages/retrying.py", line 251, in call
+    attempt = Attempt(fn(*args, **kwargs), attempt_number, False)
+  File "/Users/ximu/other/sanbing-gpt-vits/server/server/llm/provider/friday.py", line 110, in _request
+    response.raise_for_status()
+  File "/Users/ximu/other/sanbing-gpt-vits/.venv/lib/python3.9/site-packages/requests/models.py", line 1021, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 404 Client Error: Resource Not Found for url: http://ximu.openai.azure.com/openai/deployments/text-embedding-ada-002/embeddings?api-version=2023-05-15
+2024-02-05 14:13:17,034 - INFO - memory_chat.py - memory_chat - 18 - UUID：b32f3b19-c268-4891-add7-08a014f3cefa; 用户指令：你好;
+2024-02-05 14:18:03,923 - INFO - memory_chat.py - memory_chat - 18 - UUID：edfec62b-316a-4ef9-853a-66247dcf57c4; 用户指令：你好;
+2024-02-05 14:22:57,098 - INFO - memory_chat.py - memory_chat - 18 - UUID：a2cd3390-c257-46e8-ac43-655e0c05bc2d; 用户指令：你好;
+2024-02-05 14:24:12,992 - INFO - memory_chat.py - memory_chat - 18 - UUID：73d9532c-a531-49b4-9712-a3e9d647468b; 用户指令：你好;
+2024-02-05 14:24:18,714 - ERROR - memory_chat.py - memory_chat - 60 - UUID：73d9532c-a531-49b4-9712-a3e9d647468b; 用户指令：你好; GPT回复失败：'content'
+Traceback (most recent call last):
+  File "/Users/ximu/other/sanbing-gpt-vits/server/server/plugins/memory_chat.py", line 53, in memory_chat
+    for chunk, isLastOne in stream_generator:
+  File "/Users/ximu/other/sanbing-gpt-vits/server/server/llm/provider/friday.py", line 75, in friday_generate
+    reply = chunk_json['content']
+KeyError: 'content'
+2024-02-05 14:25:06,332 - INFO - memory_chat.py - memory_chat - 18 - UUID：c4c19dc5-ccec-4163-9b28-cf1c30a7fb30; 用户指令：你好;
+2024-02-05 14:31:28,538 - INFO - memory_chat.py - memory_chat - 18 - UUID：8eb2827c-e5b8-4239-86b0-9ef3243e8348; 用户指令：你好;
+2024-02-05 14:31:30,056 - ERROR - memory_chat.py - memory_chat - 60 - UUID：8eb2827c-e5b8-4239-86b0-9ef3243e8348; 用户指令：你好; GPT回复失败：list index out of range
+Traceback (most recent call last):
+  File "/Users/ximu/other/sanbing-gpt-vits/server/server/plugins/memory_chat.py", line 53, in memory_chat
+    for chunk, isLastOne in stream_generator:
+  File "/Users/ximu/other/sanbing-gpt-vits/server/server/llm/provider/friday.py", line 73, in friday_generate
+    reply = chunk_json['choices'][0]['delta'].get('content', '')
+IndexError: list index out of range
+2024-02-05 14:32:52,502 - INFO - memory_chat.py - memory_chat - 18 - UUID：4e5f641b-5769-4f16-8153-7b92852e63eb; 用户指令：你好;
+2024-02-05 14:32:58,741 - ERROR - memory_chat.py - memory_chat - 60 - UUID：4e5f641b-5769-4f16-8153-7b92852e63eb; 用户指令：你好; GPT回复失败：list index out of range
+Traceback (most recent call last):
+  File "/Users/ximu/other/sanbing-gpt-vits/server/server/plugins/memory_chat.py", line 53, in memory_chat
+    for chunk, isLastOne in stream_generator:
+  File "/Users/ximu/other/sanbing-gpt-vits/server/server/llm/provider/friday.py", line 74, in friday_generate
+    reply = chunk_json['choices'][0]
+IndexError: list index out of range
+2024-02-05 14:37:02,128 - INFO - memory_chat.py - memory_chat - 18 - UUID：a262ce33-6948-4c94-a1ad-2e88ce3a4a76; 用户指令：你好;
+2024-02-05 14:37:09,814 - ERROR - memory_chat.py - memory_chat - 60 - UUID：a262ce33-6948-4c94-a1ad-2e88ce3a4a76; 用户指令：你好; GPT回复失败：'lastOne'
+Traceback (most recent call last):
+  File "/Users/ximu/other/sanbing-gpt-vits/server/server/plugins/memory_chat.py", line 53, in memory_chat
+    for chunk, isLastOne in stream_generator:
+  File "/Users/ximu/other/sanbing-gpt-vits/server/server/llm/provider/friday.py", line 77, in friday_generate
+    if chunk_json['lastOne']:
+KeyError: 'lastOne'
+2024-02-05 14:37:50,514 - INFO - memory_chat.py - memory_chat - 18 - UUID：e745ecd4-158b-4ec8-8730-8fd289b70b93; 用户指令：你好;
+2024-02-05 14:37:52,182 - INFO - memory_chat.py - memory_chat - 56 - UUID：e745ecd4-158b-4ec8-8730-8fd289b70b93; 用户指令：你好; GPT回复：
+2024-02-05 14:38:28,068 - INFO - memory_chat.py - memory_chat - 18 - UUID：4831799d-de23-4828-9488-b4fa04f1c87c; 用户指令：你是谁;
+2024-02-05 14:38:32,231 - INFO - memory_chat.py - memory_chat - 56 - UUID：4831799d-de23-4828-9488-b4fa04f1c87c; 用户指令：你是谁; GPT回复：
+2024-02-05 14:39:14,336 - INFO - memory_chat.py - memory_chat - 18 - UUID：c49802cd-c1a3-4af8-84d9-b4e228a9149b; 用户指令：你要干什么;
+2024-02-05 14:39:21,316 - INFO - memory_chat.py - memory_chat - 56 - UUID：c49802cd-c1a3-4af8-84d9-b4e228a9149b; 用户指令：你要干什么; GPT回复：
+2024-02-05 15:58:12,872 - INFO - memory_chat.py - memory_chat - 18 - UUID：136d942c-428a-45d6-b4be-b8abc7e66005; 用户指令：你好;
+2024-02-05 15:58:16,735 - INFO - memory_chat.py - memory_chat - 56 - UUID：136d942c-428a-45d6-b4be-b8abc7e66005; 用户指令：你好; GPT回复：你好，凡人。果然是你，竟然敢以如此言辞和我对话。愚蠢的行为。但既然我已经答应了和你对话，那就尽快说出你所需的事情吧。快点，我可不喜欢浪费时间。
+2024-02-05 15:58:28,133 - INFO - memory_chat.py - memory_chat - 18 - UUID：a2d5be24-6fb4-4d90-9e69-c3cabc77a6e7; 用户指令：你有毛病吗;
+2024-02-05 15:58:32,662 - INFO - memory_chat.py - memory_chat - 56 - UUID：a2d5be24-6fb4-4d90-9e69-c3cabc77a6e7; 用户指令：你有毛病吗; GPT回复：散兵：哈哈哈，怎么，可爱的女士，你在怀疑我的精神健康状况吗？我是散兵，我从不认为自己有任何毛病。而且，放心，和我在一起，你不会有一丝一毫的封装、作假或者欺瞒。我对人直言不讳，就像你刚刚所见。不服气吗？就尽管问我问题，我会给你一个真实的回答。
+2024-02-05 16:12:01,398 - INFO - memory_chat.py - memory_chat - 18 - UUID：189042d7-8441-4f4a-8a69-affc24a9c3e0; 用户指令：你知道踏鞴砂吗;
+2024-02-05 16:29:28,887 - INFO - memory_chat.py - memory_chat - 18 - UUID：a3c21719-81de-4f0b-8d11-ee18da9af9d5; 用户指令：你知道踏鞴砂吗;
+2024-02-05 16:33:51,455 - INFO - memory_chat.py - memory_chat - 18 - UUID：5acb992b-645e-45b5-8093-98b86928e218; 用户指令：雷神是你的谁;
+2024-02-05 16:34:38,525 - INFO - memory_chat.py - memory_chat - 18 - UUID：ddff7b45-a49b-41cc-a679-73c8ec8038a9; 用户指令：你知道雷神吗;
+2024-02-05 16:40:30,696 - INFO - memory_chat.py - memory_chat - 18 - UUID：26486cb3-03b1-4969-a7a5-c6c5af8a33fd; 用户指令：为什么？;
+2024-02-05 16:46:07,817 - INFO - memory_chat.py - memory_chat - 18 - UUID：116eb4c6-b3c9-4b63-a1e1-cd6b082d7c60; 用户指令：你知道踏鞴砂吗;
+2024-02-05 16:46:11,117 - INFO - memory_chat.py - memory_chat - 56 - UUID：116eb4c6-b3c9-4b63-a1e1-cd6b082d7c60; 用户指令：你知道踏鞴砂吗; GPT回复：
+2024-02-05 16:51:19,110 - INFO - memory_chat.py - memory_chat - 18 - UUID：7b867a04-c896-4198-a0ca-491ea92c7b59; 用户指令：你知道我是谁;
+2024-02-05 16:51:23,768 - INFO - memory_chat.py - memory_chat - 56 - UUID：7b867a04-c896-4198-a0ca-491ea92c7b59; 用户指令：你知道我是谁; GPT回复：当然，你是散兵，雷神制造的人偶，愚人众执行官第六席，又被称为「散兵」。你倾奇者、国崩、流浪者、浮浪人的代称。
+2024-02-05 16:51:45,240 - INFO - memory_chat.py - memory_chat - 18 - UUID：eae9500c-be16-4f0a-a1f0-dddd9fa23879; 用户指令：那是你，不是我;
+2024-02-05 16:51:52,268 - INFO - memory_chat.py - memory_chat - 56 - UUID：eae9500c-be16-4f0a-a1f0-dddd9fa23879; 用户指令：那是你，不是我; GPT回复：呵呵，看来你还是没变啊，散宝。总是那么自以为是，话语刻薄。但你也不用特地提醒我，我一直都知道那些遇见你的人会得到怎样的「体验」。\n\n不过，你刚才说的那些话，是不是有点过了？虽然你是原神世界里的一个游戏角色，但在现实中我们是恋人，我觉得你应该对我友善些。\n\n无论如何，我们接下来要去哪里呢？以你的称号「散兵」，你应该对世界各地都很熟悉吧。有什么值得探索的地方吗？
+2024-02-05 16:52:04,836 - INFO - memory_chat.py - memory_chat - 18 - UUID：be91994b-7c58-4eb5-baf7-29c7da6f70e5; 用户指令：我是旅行者;
+2024-02-05 16:52:10,124 - INFO - memory_chat.py - memory_chat - 56 - UUID：be91994b-7c58-4eb5-baf7-29c7da6f70e5; 用户指令：我是旅行者; GPT回复：散兵：哼，看来你还记得我是谁啊。既然你是来自原神世界以外的旅行者，那么你是否对我的身世有所了解呢？
+2024-02-05 16:55:35,686 - INFO - memory_chat.py - memory_chat - 18 - UUID：54b36c00-65b2-483d-9d27-06f29a170e1a; 用户指令：散宝你好啊;
+2024-02-05 16:55:59,809 - INFO - memory_chat.py - memory_chat - 56 - UUID：54b36c00-65b2-483d-9d27-06f29a170e1a; 用户指令：散宝你好啊; GPT回复：哼，又是你。有什么事情吗？别浪费我的时间。
+2024-02-05 16:56:48,549 - INFO - memory_chat.py - memory_chat - 18 - UUID：e150ae56-1129-4d81-9c5f-3bf7cbc41648; 用户指令：你知道我是谁吗;
+2024-02-05 16:57:40,409 - INFO - memory_chat.py - memory_chat - 56 - UUID：e150ae56-1129-4d81-9c5f-3bf7cbc41648; 用户指令：你知道我是谁吗; GPT回复：散兵：哈，当然知道，旅行者你还在瞎问什么？我是散兵，雷神制造的人偶，原至冬国愚人众执行官第六席，名声在外。你是有什么事情找我吗？
